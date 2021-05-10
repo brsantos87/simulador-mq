@@ -1,18 +1,32 @@
 package br.org.caixa.jms;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
+import br.org.caixa.jms.factory.ConnectionFactoryMQ;
 
 
 @ApplicationScoped
 public class JMSProducer {
 
-//    @Inject
-//    ConnectionFactory connectionFactory;
+    @Inject
+    ConnectionFactoryMQ connectionFactoryMQ;
 
-    public void sendMessage(String message) {
-//        try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)){
-//            context.createProducer().send(context.createQueue("DEV.QUEUE.1"), message);
-//        } catch (JMSRuntimeException ex) {
-//            // handle exception (details omitted)
-//        }
+    public void sendMessage(String message, String queue) throws JMSException {
+    	
+    	try (Connection connection = connectionFactoryMQ.getConnection().createConnection();
+				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+				MessageProducer producer = session.createProducer(session.createQueue(queue))) {
+    		TextMessage toMessage = session.createTextMessage();
+            toMessage.setStringProperty("JMS_IBM_Character_Set", "819");
+            toMessage.setStringProperty("JMS_IBM_Format", "MQSTR");
+            toMessage.setText(message);
+            producer.send(toMessage);
+    	}
+    	
     }
 }

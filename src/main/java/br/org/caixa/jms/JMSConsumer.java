@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 import br.org.caixa.jms.factory.ConnectionFactoryMQ;
 import br.org.caixa.jms.sibar.ConverterMensagem;
 import br.org.caixa.model.simulador.FilaSimulador;
+import br.org.caixa.service.SimuladorService;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
@@ -26,6 +28,12 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 	private final Logger logger = Logger.getLogger(JMSConsumer.class);
+	
+	@Inject
+	private SimuladorService simuladorService;
+	
+	@Inject
+	private ConnectionFactoryMQ connectionFactoryMQ;
 
 	/**
 	 * retorna o intervalo de leitura da fila
@@ -54,8 +62,7 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 	@Override
 	public void run() {
 		logger.info("Iniciado listener " + getQueueConsumer());
-		ConnectionFactoryMQ conectioFactory = new ConnectionFactoryMQ();
-		try (Connection connection = conectioFactory.getConnection().createConnection();
+		try (Connection connection = connectionFactoryMQ.getConnection().createConnection();
 				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 				MessageConsumer consumer = session.createConsumer(session.createQueue(getQueueConsumer()))) {
 			while (true) {
@@ -67,12 +74,9 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 				logger.info(String.format("Recebido JMSCorrelationID: %s message: %s", textMsg.getJMSCorrelationID(),
 						textMsg.getText()));
 				FilaSimulador filaSimulador = obterMensagemEntrada(textMsg.getText());
-				//TODO obter servico da mensagem
-				//TODO obter tarefas da mensagem
-				//TODO consultar servico no banco
-				//TODO consultar tarefas no banco
-				//TODO montar resposta
-				//TODO devolver mensagem
+				String msgRetorno = simuladorService.obterMensagem(filaSimulador);
+				logger.info("Postar mensagem: "+msgRetorno);
+				
 			}
 		} catch (JMSException e) {
 			logger.error(e);
