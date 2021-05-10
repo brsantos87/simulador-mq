@@ -15,11 +15,13 @@ import javax.jms.TextMessage;
 import org.apache.log4j.Logger;
 
 import br.org.caixa.jms.factory.ConnectionFactoryMQ;
+import br.org.caixa.jms.sibar.ConverterMensagem;
+import br.org.caixa.model.simulador.FilaSimulador;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
 @ApplicationScoped
-public abstract class JMSConsumer implements Runnable {
+public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -40,7 +42,7 @@ public abstract class JMSConsumer implements Runnable {
 	 * @return
 	 */
 	protected abstract String getQueueConsumer();
-
+	
 	void onStart(@Observes StartupEvent ev) {
 		scheduler.scheduleWithFixedDelay(this, 0L, timeScheduleEvent(), TimeUnit.SECONDS);
 	}
@@ -64,9 +66,10 @@ public abstract class JMSConsumer implements Runnable {
 				}
 				logger.info(String.format("Recebido JMSCorrelationID: %s message: %s", textMsg.getJMSCorrelationID(),
 						textMsg.getText()));
+				FilaSimulador filaSimulador = obterMensagemEntrada(textMsg.getText());
 				//TODO obter servico da mensagem
-				//TODO consultar servico no banco
 				//TODO obter tarefas da mensagem
+				//TODO consultar servico no banco
 				//TODO consultar tarefas no banco
 				//TODO montar resposta
 				//TODO devolver mensagem
