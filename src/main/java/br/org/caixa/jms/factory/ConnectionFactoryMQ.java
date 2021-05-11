@@ -2,12 +2,14 @@ package br.org.caixa.jms.factory;
 
 import java.util.ResourceBundle;
 
+import javax.enterprise.context.Dependent;
 import javax.jms.JMSException;
 
 import org.apache.log4j.Logger;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 
+@Dependent
 public class ConnectionFactoryMQ {
 
 	private final Logger logger = Logger.getLogger(ConnectionFactoryMQ.class);
