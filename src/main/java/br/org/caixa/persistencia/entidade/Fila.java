@@ -1,53 +1,41 @@
 package br.org.caixa.persistencia.entidade;
 
+import java.util.List;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-		name = "fila",
-		uniqueConstraints =  {@UniqueConstraint(columnNames = {"nome", "descricao"})}
-)
+@Table(name = "fila")
 public class Fila{
    
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(length = 150, nullable = false)
+	@Column(length = 150, nullable = false, unique = true)
     private String nome;
 	
-	@Column(length = 250, nullable = false)
-    private String descricao;
+	@OneToMany(mappedBy = "fila")
+	@JsonbTransient
+    private List<MensagemFila> filaMensagens;
 
-    @Column(length = 4000, nullable = false)
-    private String mensagem;
+    public List<MensagemFila> getFilaMensagens() {
+		return filaMensagens;
+	}
 
-    private boolean ativo;
+	public void setFilaMensagens(List<MensagemFila> filaMensagens) {
+		this.filaMensagens = filaMensagens;
+	}
 
-    public Long getId(){
+	public Long getId(){
         return id;
-    }
-
-    public String getMensagem(){
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem){
-        this.mensagem = mensagem;
-    }
-
-    public boolean isAtivo(){
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo){
-        this.ativo = ativo;
     }
 
 	public String getNome() {
@@ -56,14 +44,6 @@ public class Fila{
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 }

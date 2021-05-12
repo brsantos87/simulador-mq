@@ -12,12 +12,12 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(
-		name = "servico_mensagem",
-		uniqueConstraints =  {@UniqueConstraint(columnNames = {"id_servico_sibar", "descricao"})}
+		name = "mensagem_fila",
+		uniqueConstraints =  {@UniqueConstraint(columnNames = {"id_fila", "descricao"})}
 )
-public class ServicoMensagem{
-   
-    @Id
+public class MensagemFila{
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,8 +30,16 @@ public class ServicoMensagem{
     private boolean ativo;
 
     @ManyToOne
-    @JoinColumn(name="id_servico_sibar", nullable=false, insertable=false)
-    private ServicoSibar servicoSibar;
+    @JoinColumn(name="id_fila", nullable=false)
+    private Fila fila;
+    
+    public Fila getFila() {
+		return fila;
+	}
+
+	public void setFila(Fila fila) {
+		this.fila = fila;
+	}
 
 	public Long getId() {
 		return this.id;

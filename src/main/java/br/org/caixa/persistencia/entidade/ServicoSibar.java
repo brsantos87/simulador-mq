@@ -2,7 +2,8 @@ package br.org.caixa.persistencia.entidade;
 
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,44 +23,33 @@ public class ServicoSibar{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
-    private String nome;
-
-    @Column(name = "operacao", length = 150, nullable = false)
-    private String operacao;
-
-    @Column(name = "versao", length = 10, nullable = false)
-    private String versao;
+    @Embedded
+    private ServicoSibarKey key;
     
     @OneToMany(mappedBy = "servicoSibar")
-    private List<ServicoMensagem> servicoMensagens;
+    @JsonbTransient
+    private List<MensagemServico> servicoMensagens;
 
     public Long getId() {
         return this.id;
     }
 
-    public String getNomeServico() {
-        return this.nome;
-    }
+	public ServicoSibarKey getKey() {
+		return key;
+	}
 
-    public void setNomeServico(String nomeServico) {
-        this.nome = nomeServico;
-    }
+	public void setKey(ServicoSibarKey key) {
+		this.key = key;
+	}
 
-    public String getOperacao() {
-        return this.operacao;
-    }
+	public List<MensagemServico> getServicoMensagens() {
+		return servicoMensagens;
+	}
 
-    public void setOperacao(String operacao) {
-        this.operacao = operacao;
-    }
+	public void setServicoMensagens(List<MensagemServico> servicoMensagens) {
+		this.servicoMensagens = servicoMensagens;
+	}
 
-    public String getVersao() {
-        return this.versao;
-    }
-
-    public void setVersao(String versao) {
-        this.versao = versao;
-    }
+    
 
 }

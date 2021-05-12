@@ -1,6 +1,7 @@
 package br.org.caixa.api;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import br.org.caixa.api.model.FilaDto;
 import br.org.caixa.persistencia.entidade.Fila;
 import br.org.caixa.persistencia.repository.FilaRepository;
 
@@ -24,21 +26,26 @@ public class FilaResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listarTodos() {
-		return Response.ok(filaRepository.findAll()).build();
+	public Response getList() {
+		return Response.ok(filaRepository.findAll().list()).build();
 	}
 	
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response buscar(@PathParam("id") Long id) {
+    public Response getById(@PathParam("id") Long id) {
         return Response.ok(filaRepository.findById(id)).build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response criar(Fila fila) {
+    @Transactional
+    public Response create(FilaDto filaDto) {
+    	Fila fila = new Fila();
+    	
+    	fila.setNome(filaDto.getNome());
+    	
         filaRepository.persist(fila);
         return Response.created(UriBuilder
                 .fromResource(FilaResource.class)
@@ -50,16 +57,21 @@ public class FilaResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response atualizar() {
- 
-        return Response.ok().build();
+    @Transactional
+    public Response update(FilaDto filaDto) {
+    	
+    	Fila fila = filaRepository.findById(filaDto.getId());
+    	fila.setNome(filaDto.getNome());
+
+    	return Response.ok(fila).build();
 
     }
     
     @DELETE
-    @Path("teste")
-    public Response apagar() {
-        return Response.ok().build();
-
+    @Transactional
+    @Path("{id}")
+    public Response delete(@PathParam("id") Long id) {
+        return Response.ok(filaRepository.deleteById(id)).build();
     }
+    
 }

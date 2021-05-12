@@ -65,16 +65,10 @@
 			<artifactId>com.ibm.mq.allclient</artifactId>
 			<version>9.2.2.0</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>5.16.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.slf4j</groupId>
-			<artifactId>slf4j-jboss-logmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
