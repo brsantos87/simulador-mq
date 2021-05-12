@@ -1,7 +1,6 @@
 package br.org.caixa.api;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,16 +17,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 
 import br.org.caixa.api.model.MensagemFilaDto;
 import br.org.caixa.api.model.MensagemServicoDto;
-import br.org.caixa.persistencia.entidade.MensagemFila;
 import br.org.caixa.persistencia.entidade.MensagemServico;
-import br.org.caixa.persistencia.entidade.ServicoSibar;
 import br.org.caixa.persistencia.entidade.ServicoSibarKey;
-import br.org.caixa.persistencia.repository.FilaRepository;
-import br.org.caixa.persistencia.repository.MensagemFilaRepository;
 import br.org.caixa.persistencia.repository.MensagemServicoRepository;
 import br.org.caixa.persistencia.repository.ServicoSibarRepository;
 

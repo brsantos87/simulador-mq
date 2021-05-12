@@ -13,7 +13,7 @@ import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 
 import br.org.caixa.jms.factory.ConnectionFactoryMQ;
 import br.org.caixa.jms.sibar.ConverterMensagem;

@@ -6,7 +6,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 
 import br.org.caixa.jms.ConstantesJMS;
 import br.org.caixa.jms.sibar.JMSMensagemXMLCosumer;

@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 
 import br.org.caixa.api.model.MensagemFilaDto;
 import br.org.caixa.persistencia.entidade.MensagemFila;

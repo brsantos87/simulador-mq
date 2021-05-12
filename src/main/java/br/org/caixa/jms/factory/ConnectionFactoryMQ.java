@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javax.enterprise.context.Dependent;
 import javax.jms.JMSException;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 
 import com.ibm.mq.jms.MQConnectionFactory;
 
