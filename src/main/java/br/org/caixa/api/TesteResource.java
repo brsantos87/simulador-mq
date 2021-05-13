@@ -18,7 +18,7 @@ public class TesteResource {
     @Path("/teste")
     public Response sendMessage(MessageSend msg) {
     	try {
-    		producer.sendMessage(msg.getMessagem(), msg.getQueue());
+    		producer.sendMessage(msg.getMensagem(), msg.getQueue());
     		return Response.ok().build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();

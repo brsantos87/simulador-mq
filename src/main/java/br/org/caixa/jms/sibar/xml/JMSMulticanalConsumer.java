@@ -4,7 +4,6 @@ import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.jboss.logging.Logger;
 
@@ -23,15 +22,14 @@ public class JMSMulticanalConsumer extends JMSMensagemXMLCosumer {
 	protected String getQueueConsumer() {
 		return ConstantesJMS.SIBAR_REQ_MULTICANAL;
 	}
-
 	
 	@Override
 	public FilaSimulador obterMensagemEntrada(String msg) {
-		FilaSimulador filaSimulador = new FilaSimulador(getQueueConsumer());
+		var filaSimulador = new FilaSimulador(getQueueConsumer());
 		logger.info("Transformando mensagem entrada");
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(MulticanalServicoEntrada.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			var jaxbContext = JAXBContext.newInstance(MulticanalServicoEntrada.class);
+			var jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			MulticanalServicoEntrada entrada = (MulticanalServicoEntrada) jaxbUnmarshaller
 					.unmarshal(new StringReader(transform(msg)));
 			for (Passo passo : entrada.getOrquestracao().getPassos().getPasso()) {

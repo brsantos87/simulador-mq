@@ -16,7 +16,7 @@ public class Passo {
 	private String operacao;
 
 	@XmlElement(name = "VERSAO")
-	private double versao;
+	private String versao;
 
 	@XmlElement(name = "RECURSOS")
 	private Recursos recursos;
@@ -29,7 +29,7 @@ public class Passo {
 		return operacao;
 	}
 
-	public double getVersao() {
+	public String getVersao() {
 		return versao;
 	}
 
@@ -45,7 +45,7 @@ public class Passo {
 		this.operacao = operacao;
 	}
 
-	public void setVersao(double versao) {
+	public void setVersao(String versao) {
 		this.versao = versao;
 	}
 

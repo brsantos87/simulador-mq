@@ -2,7 +2,7 @@ package br.org.caixa.model.simulador;
 
 public class IdServico {
 	
-	public IdServico(String servico, String operacao, double versao) {
+	public IdServico(String servico, String operacao, String versao) {
 		super();
 		this.servico = servico;
 		this.operacao = operacao;
@@ -13,7 +13,7 @@ public class IdServico {
 
 	private String operacao;
 
-	private double versao;
+	private String versao;
 
 	public String getServico() {
 		return servico;
@@ -23,7 +23,7 @@ public class IdServico {
 		return operacao;
 	}
 
-	public double getVersao() {
+	public String getVersao() {
 		return versao;
 	}
 
@@ -35,7 +35,7 @@ public class IdServico {
 		this.operacao = operacao;
 	}
 
-	public void setVersao(double versao) {
+	public void setVersao(String versao) {
 		this.versao = versao;
 	}
 	

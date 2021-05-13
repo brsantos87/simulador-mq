@@ -30,10 +30,10 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 	private final Logger logger = Logger.getLogger(JMSConsumer.class);
 	
 	@Inject
-	private SimuladorService simuladorService;
+	SimuladorService simuladorService;
 	
 	@Inject
-	private ConnectionFactoryMQ connectionFactoryMQ;
+	ConnectionFactoryMQ connectionFactoryMQ;
 
 	/**
 	 * retorna o intervalo de leitura da fila
@@ -62,23 +62,26 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 	@Override
 	public void run() {
 		logger.info("Iniciado listener " + getQueueConsumer());
-		try (Connection connection = connectionFactoryMQ.getConnection().createConnection();
-				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-				MessageConsumer consumer = session.createConsumer(session.createQueue(getQueueConsumer()))) {
+		try (var connection = connectionFactoryMQ.getConnection().createConnection();
+				var session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+				var consumer = session.createConsumer(session.createQueue(getQueueConsumer()))) {
 			while (true) {
 				connection.start();
+				logger.info("Buscando mensagem na fila ...");
 				TextMessage textMsg = (TextMessage) consumer.receive();
-				if (textMsg.getText() != null) {
+				logger.info("Mensagem recebida ...");
+				if (textMsg.getText() == null) {
+					logger.info("Mensagem nula");
 					return;
 				}
 				logger.info(String.format("Recebido JMSCorrelationID: %s message: %s", textMsg.getJMSCorrelationID(),
 						textMsg.getText()));
-				FilaSimulador filaSimulador = obterMensagemEntrada(textMsg.getText());
-				String msgRetorno = simuladorService.obterMensagem(filaSimulador);
-				logger.info("Postar mensagem: "+msgRetorno);
+				var filaSimulador = obterMensagemEntrada(textMsg.getText());
+				var msgRetorno = simuladorService.obterMensagem(filaSimulador);
+				logger.info("Postar mensagem: " + msgRetorno);
 				
 			}
-		} catch (JMSException e) {
+		} catch (Exception e) {
 			logger.error(e);
 		}
 	}

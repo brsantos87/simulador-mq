@@ -19,20 +19,24 @@ public class ConnectionFactoryMQ {
 	private static ResourceBundle getProperties() {
 		return properties;
 	}
+	
+	MQConnectionFactory cf = null;
 
-	public MQConnectionFactory getConnection() {
-		MQConnectionFactory cf = new MQConnectionFactory();
-
-		logger.info("Obtendo conexao com fila MQ");
-		try {
-			cf.setHostName(getProperties().getString("mq.hostname"));
-			cf.setChannel(getProperties().getString("mq.channel"));
-			cf.setQueueManager(getProperties().getString("mq.queueManager"));
-			cf.setTransportType(com.ibm.msg.client.wmq.common.CommonConstants.WMQ_CM_CLIENT);
-			cf.setPort(Integer.parseInt(getProperties().getString("mq.port")));
-		} catch (NumberFormatException | JMSException e) {
-			logger.error("Erro ao conectar ao obter conexao MQ");
-		}
+	public synchronized MQConnectionFactory getConnection() {
+		if(cf == null) {
+			cf = new MQConnectionFactory();
+			logger.info("Obtendo nova conexao com fila MQ");
+			try {
+				cf.setHostName(getProperties().getString("mq.hostname"));
+				cf.setChannel(getProperties().getString("mq.channel"));
+				cf.setQueueManager(getProperties().getString("mq.queueManager"));
+				cf.setTransportType(com.ibm.msg.client.wmq.common.CommonConstants.WMQ_CM_CLIENT);
+				cf.setPort(Integer.parseInt(getProperties().getString("mq.port")));
+			} catch (NumberFormatException | JMSException e) {
+				logger.error("Erro ao conectar ao obter conexao MQ");
+			}
+		} else 
+			logger.info("retornando conexao com fila MQ");
 		return cf;
 	}
 
