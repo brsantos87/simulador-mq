@@ -12,6 +12,17 @@ public class MensagemFilaDto {
 
     private Long idFila;
 
+	public MensagemFilaDto(Long id, String descricao, String mensagem, boolean ativo) {
+		this.descricao = descricao;
+		this.mensagem = mensagem;
+		this.id = id;
+		this.ativo = ativo;
+	}
+	
+	public MensagemFilaDto() {
+		
+	}
+
 	public Long getId() {
 		return id;
 	}

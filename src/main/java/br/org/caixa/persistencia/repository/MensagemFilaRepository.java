@@ -13,4 +13,9 @@ public class MensagemFilaRepository implements PanacheRepository<MensagemFila> {
         return find("SELECT m FROM MensagemFila m join fetch m.fila f where f.nome = :nome and m.ativo = true",
                 Parameters.with("nome", nome)).firstResult();
     }
+
+	public void ativaMsg(Long idFila, Long idMensagem) {
+		update("ativo = false where fila.id = :idFila", Parameters.with("idFila", idFila));
+		update("ativo = true where id = :idMensagem", Parameters.with("idMensagem", idMensagem));
+	}
 }

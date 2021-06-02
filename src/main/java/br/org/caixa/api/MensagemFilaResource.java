@@ -73,7 +73,7 @@ public class MensagemFilaResource {
     @Transactional
     public Response update(MensagemFilaDto dto) {
     	
-    	MensagemFila msgFila = mensagemFilaRepository.findById(dto.getId());
+    	var msgFila = mensagemFilaRepository.findById(dto.getId());
     	msgFila.setDescricao(dto.getDescricao());
     	msgFila.setMensagem(dto.getMensagem());
     	msgFila.setAtivo(dto.isAtivo());
@@ -96,4 +96,5 @@ public class MensagemFilaResource {
     public Response getMensagemAtiva(@PathParam("id") String id) {
         return Response.ok(mensagemFilaRepository.findAtivoByNomeFila(id)).build();
     }
+
 }
