@@ -1,7 +1,5 @@
 package br.org.caixa.persistencia.repository;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 
 import br.org.caixa.persistencia.entidade.Fila;

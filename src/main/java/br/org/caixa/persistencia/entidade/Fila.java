@@ -1,8 +1,6 @@
 package br.org.caixa.persistencia.entidade;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "fila")
@@ -22,8 +19,11 @@ public class Fila{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(length = 150, nullable = false, unique = true)
-    private String nome;
+	@Column(length = 150, nullable = false, unique = true, name = "NOME_REQUISICAO")
+    private String nomeRequisicao;
+	
+	@Column(length = 150, unique = true, name = "NOME_RESPOSTA")
+    private String nomeResposta;
 	
 	@OneToMany(mappedBy = "fila")
 	@JsonbTransient
@@ -41,12 +41,23 @@ public class Fila{
         return id;
     }
 
-	public String getNome() {
-		return nome;
+	public String getNomeRequisicao() {
+		return nomeRequisicao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeRequisicao(String nomeRequisicao) {
+		this.nomeRequisicao = nomeRequisicao;
 	}
 
+	public String getNomeResposta() {
+		return nomeResposta;
+	}
+
+	public void setNomeResposta(String nomeResposta) {
+		this.nomeResposta = nomeResposta;
+	}
+	
+	
+
+	
 }

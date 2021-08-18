@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -20,14 +19,14 @@ public abstract class JMSMensagemXMLCosumer extends JMSConsumer{
 
 	protected String transform(String xml) {
 	    try {
-	        TransformerFactory tFactory = TransformerFactory.newInstance();
+	        var tFactory = TransformerFactory.newDefaultInstance();
 	        String xsl = XML_TEMPLATE_REMOVE_NAMESPACE;
 
 	        Source xslSource = new StreamSource(new ByteArrayInputStream(xsl.getBytes()));
-	        Transformer transformer = tFactory.newTransformer(xslSource);
+	        var transformer = tFactory.newTransformer(xslSource);
 
 	        Source xmlSource = new StreamSource(new ByteArrayInputStream(xml.getBytes()));
-	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        var outputStream = new ByteArrayOutputStream();
 	        transformer.transform(xmlSource, new StreamResult(outputStream));
 
 	        return new String(outputStream.toByteArray());

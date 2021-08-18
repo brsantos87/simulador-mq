@@ -11,7 +11,7 @@ public class FilaSimulador {
 	
 	public FilaSimulador(String fila) {
 		this.fila = fila;
-		this.listaIdServico = new ArrayList<IdServico>();
+		this.listaIdServico = new ArrayList<>();
 	}
 
 	public String getFila() {

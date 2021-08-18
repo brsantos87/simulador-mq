@@ -42,11 +42,12 @@ public class FilaResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getList() {
-		List<Fila> filas = filaRepository.findAll(Sort.ascending("nome")).list();
+		List<Fila> filas = filaRepository.findAll(Sort.ascending("nomeRequisicao")).list();
 		List<FilaRetornoDto> filasRetorno = filas.stream().map(fila -> 
 			new FilaRetornoDto(
 					fila.getId(), 
-					fila.getNome(), 
+					fila.getNomeRequisicao(), 
+					fila.getNomeResposta(),
 					fila.getFilaMensagens().stream().map(
 							msg -> new MensagemFilaDto(
 									fila.getId(), 
@@ -64,7 +65,8 @@ public class FilaResource {
 		var fila = filaRepository.findById(id);
 		var retorno = new FilaRetornoDto(
 				fila.getId(), 
-				fila.getNome(), 
+				fila.getNomeRequisicao(),
+				fila.getNomeResposta(),
 				fila.getFilaMensagens().stream().map(
 						msg -> new MensagemFilaDto(
 								msg.getId(), 
@@ -79,9 +81,9 @@ public class FilaResource {
 	@Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response create(FilaDto filaDto) {
-    	Fila fila = new Fila();
+    	var fila = new Fila();
     	
-    	fila.setNome(filaDto.getNome());
+    	fila.setNomeRequisicao(filaDto.getNomeRequisicao());
     	
         filaRepository.persist(fila);
         return Response.created(UriBuilder
@@ -97,11 +99,11 @@ public class FilaResource {
     @Transactional
     public Response update(FilaDto filaDto) {
     	
-    	Fila fila = filaRepository.findById(filaDto.getId());
-    	fila.setNome(filaDto.getNome());
+    	var fila = filaRepository.findById(filaDto.getId());
+    	fila.setNomeRequisicao(filaDto.getNomeRequisicao());
+    	fila.setNomeResposta(filaDto.getNomeResposta());
 
     	return Response.ok(fila).build();
-
     }
     
     @DELETE
@@ -151,7 +153,6 @@ public class FilaResource {
     	mensagemFilaRepository.ativaMsg(msgFila.getFila().getId(),msgFila.getId());
     	
     	return Response.ok(msgFila).build();
-
     }
     
 }

@@ -10,7 +10,7 @@ import io.quarkus.panache.common.Parameters;
 public class MensagemFilaRepository implements PanacheRepository<MensagemFila> {
 
 	public MensagemFila findAtivoByNomeFila(String nome) {
-        return find("SELECT m FROM MensagemFila m join fetch m.fila f where f.nome = :nome and m.ativo = true",
+        return find("SELECT m FROM MensagemFila m join fetch m.fila f where f.nomeRequisicao = :nome and m.ativo = true",
                 Parameters.with("nome", nome)).firstResult();
     }
 

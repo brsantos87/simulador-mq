@@ -4,6 +4,6 @@ import br.org.caixa.model.simulador.FilaSimulador;
 
 public interface SimuladorService {
 	
-	String obterMensagem(FilaSimulador filaSimulador);
+	RespostaMensagemSimulador obterMensagem(FilaSimulador filaSimulador);
 
 }

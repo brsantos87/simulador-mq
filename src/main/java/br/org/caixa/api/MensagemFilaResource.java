@@ -50,7 +50,7 @@ public class MensagemFilaResource {
 	@Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public Response create(MensagemFilaDto msgDto) {
-    	MensagemFila msgFila = new MensagemFila();
+    	var msgFila = new MensagemFila();
     	
     	msgFila.setDescricao(msgDto.getDescricao());
     	msgFila.setMensagem(msgDto.getMensagem());

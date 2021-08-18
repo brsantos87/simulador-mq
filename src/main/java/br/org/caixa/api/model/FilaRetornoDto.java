@@ -5,15 +5,18 @@ import java.util.List;
 
 public class FilaRetornoDto {
 	 
-	private String nome;
+	private String nomeRequisicao;
+
+	private String nomeResposta;
 	
 	private Long id;
 
 	private List<MensagemFilaDto> mensagensFila;
 
-	public FilaRetornoDto(Long id, String nome, List<MensagemFilaDto> listaMensagems) {
+	public FilaRetornoDto(Long id, String nomeReq, String nomeResp, List<MensagemFilaDto> listaMensagems) {
 		this.id = id;
-		this.nome = nome;
+		this.nomeRequisicao = nomeReq;
+		this.nomeResposta = nomeResp;
 		this.mensagensFila = listaMensagems;
 	}
 
@@ -33,12 +36,21 @@ public class FilaRetornoDto {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeRequisicao() {
+		return nomeRequisicao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeRequisicao(String nomeRequisicao) {
+		this.nomeRequisicao = nomeRequisicao;
 	}
-	
+
+	public String getNomeResposta() {
+		return nomeResposta;
+	}
+
+	public void setNomeResposta(String nomeResposta) {
+		this.nomeResposta = nomeResposta;
+	}
+
+		
 }

@@ -2,7 +2,9 @@ package br.org.caixa.api.model;
 
 public class FilaDto {
 	 
-	private String nome;
+	private String nomeRequisicao;
+
+	private String nomeResposta;
 	
 	private Long id;
 
@@ -14,12 +16,21 @@ public class FilaDto {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeRequisicao() {
+		return nomeRequisicao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeRequisicao(String nomeRequisicao) {
+		this.nomeRequisicao = nomeRequisicao;
 	}
-	
+
+	public String getNomeResposta() {
+		return nomeResposta;
+	}
+
+	public void setNomeResposta(String nomeResposta) {
+		this.nomeResposta = nomeResposta;
+	}
+
+		
 }

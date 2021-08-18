@@ -25,6 +25,5 @@ public class JMSProducer {
             toMessage.setText(message);
             producer.send(toMessage);
     	}
-    	
     }
 }

@@ -7,9 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -17,7 +15,6 @@ import org.jboss.logging.Logger;
 
 import br.org.caixa.jms.factory.ConnectionFactoryMQ;
 import br.org.caixa.jms.sibar.ConverterMensagem;
-import br.org.caixa.model.simulador.FilaSimulador;
 import br.org.caixa.service.SimuladorService;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -77,8 +74,22 @@ public abstract class JMSConsumer implements Runnable, ConverterMensagem {
 				logger.info(String.format("Recebido JMSCorrelationID: %s message: %s", textMsg.getJMSCorrelationID(),
 						textMsg.getText()));
 				var filaSimulador = obterMensagemEntrada(textMsg.getText());
-				var msgRetorno = simuladorService.obterMensagem(filaSimulador);
-				logger.info("Postar mensagem: " + msgRetorno);
+				var respostaMensagemSimulador = simuladorService.obterMensagem(filaSimulador);
+				if(respostaMensagemSimulador.getFilaResposta() != null && !respostaMensagemSimulador.getFilaResposta().isEmpty()) {
+					logger.info(String.format("Enviando para fila: %s /n mensagem fila: %s",
+							respostaMensagemSimulador.getFilaResposta(), respostaMensagemSimulador.getMensagem()));
+					try (MessageProducer producer = session.createProducer(session.createQueue(respostaMensagemSimulador.getFilaResposta()))) {
+			    		var toMessage = session.createTextMessage();
+			            toMessage.setStringProperty("JMS_IBM_Character_Set", "819");
+			            toMessage.setStringProperty("JMS_IBM_Format", "MQSTR");
+			            toMessage.setJMSCorrelationID(textMsg.getJMSCorrelationID());
+			            toMessage.setText(respostaMensagemSimulador.getMensagem());
+			            producer.send(toMessage);
+			    	}
+				}else {
+					logger.info(String.format("Fila de resposta nao cadastrada. /n Mensagem resposta: %s", respostaMensagemSimulador.getMensagem()));
+				}
+				
 				
 			}
 		} catch (Exception e) {
